@@ -1,0 +1,38 @@
+class Main {
+    function void main(){
+        var Game game;
+        var boolean x, winner;
+
+        let game = Game.new();
+
+        do Output.printString("X plays first!");
+        do Output.println();
+
+        do Output.printString(" 1 | 2 | 3");
+        do Output.println();
+        do Output.printString("----------");
+        do Output.println();
+        do Output.printString(" 4 | 5 | 6");
+        do Output.println();
+        do Output.printString("----------");
+        do Output.println();
+        do Output.printString(" 7 | 8 | 9");
+        do Output.println();
+
+        let x = false;
+        let winner = false;
+
+        while(~winner){
+            if(game.isBoardFull()) {
+                do Output.printString("It's a tie, No winner!");
+                return;
+            }
+
+            do game.selectCell(x);
+            let winner = game.winner();
+            let x = ~x;
+            
+        }
+        return;
+    }
+}

@@ -1,0 +1,63 @@
+/** Apple (food) object for the Snake game.
+ *  Always respawns on a grid cell that is NOT occupied by the snake.
+ */
+class Apple {
+
+    /*----------------------------------------------------------*/
+    /* fields                                                   */
+    /*----------------------------------------------------------*/
+    field int x, y;        // upper-left pixel of the apple
+
+    /*----------------------------------------------------------*/
+    /* constructor                                              */
+    /*----------------------------------------------------------*/
+    constructor Apple new () {
+        /* Main will call spawn(snake) right after creation.   */
+        let x = 0;
+        let y = 0;
+        return this;
+    }
+
+    /*----------------------------------------------------------*/
+    /* public API                                               */
+    /*----------------------------------------------------------*/
+
+    /** Place the apple at a random position (5..64 , 5..29)
+     *  that doesn’t overlap any snake segment.                 */
+    method void spawn (Snake s) {
+        var boolean safe;
+        var int tryX, tryY, i;
+
+        while (true) {
+
+            /* pick candidate coordinates inside safe bounds  */
+            let tryX = Math.random(60) + 5;   // 5 .. 64
+            let tryY = Math.random(25) + 5;   // 5 .. 29
+
+            /* assume they’re safe, then verify against snake */
+            let safe = true;
+            let i = 0;
+            while (i < s.getLength()) {
+                if ((tryX = s.getX(i)) & (tryY = s.getY(i))) {
+                    let safe = false;         // overlaps body
+                }
+                let i = i + 1;
+            }
+
+            /* if safe, commit and return */
+            if (safe) {
+                let x = tryX;
+                let y = tryY;
+                return;
+            }
+            /* else loop again and pick new candidate */
+        }
+
+        /* unreachable, but required by Jack syntax checker    */
+        return;
+    }
+
+    /** Getters */
+    method int getX () { return x; }
+    method int getY () { return y; }
+}

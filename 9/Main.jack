@@ -1,0 +1,74 @@
+/** Main loop for Snake game (arrow keys, Game Over on wall). */
+class Main {
+
+    function void main () {
+        var Snake snake;
+        var Apple apple;
+        var int   key, i;
+        var int   x1, y1, x2, y2;
+        var int   ax1, ay1, ax2, ay2;
+
+        let snake = Snake.new();
+        let apple = Apple.new();
+        do apple.spawn(snake);          // ← first legal spawn ✔
+
+        while (true) {
+
+            /* ── input ── */
+            let key = Keyboard.keyPressed();
+            if (key = 131) { do snake.setDirection(0); } // Up
+            if (key = 132) { do snake.setDirection(1); } // Right
+            if (key = 133) { do snake.setDirection(2); } // Down
+            if (key = 130) { do snake.setDirection(3); } // Left
+
+            /* ── update ── */
+            do snake.move();
+
+            /* wall collision → Game Over */
+            if ((snake.headX() < 0) | (snake.headX() > 511) |
+                (snake.headY() < 0) | (snake.headY() > 255)) {
+                do Screen.clearScreen();
+                do Output.printString("Game Over");
+                do Output.println();
+                do Sys.wait(100);
+                do Sys.halt();
+            }
+
+            /* eat apple */
+            if ((snake.headX() = apple.getX()) &
+                (snake.headY() = apple.getY())) {
+                do snake.grow();
+                do apple.spawn(snake);   // ← respawn with snake ✔
+            }
+
+            /* ── draw  ── */
+            do Screen.clearScreen();
+
+            /* apple (4×4) */
+            let ax1 = apple.getX();
+            let ay1 = apple.getY();
+            let ax2 = ax1 + 3;
+            let ay2 = ay1 + 3;
+            if (~((ax1 < 0) | (ax2 > 511) | (ay1 < 0) | (ay2 > 255))) {
+                do Screen.drawRectangle(ax1, ay1, ax2, ay2);
+            }
+
+            /* snake (2×2 per segment) */
+            let i = 0;
+            while (i < snake.getLength()) {
+                let x1 = snake.getX(i);
+                let y1 = snake.getY(i);
+                let x2 = x1 + 1;
+                let y2 = y1 + 1;
+                if (~((x1 < 0) | (x2 > 511) | (y1 < 0) | (y2 > 255))) {
+                    do Screen.drawRectangle(x1, y1, x2, y2);
+                }
+                let i = i + 1;
+            }
+
+            /* ~20 FPS */
+            do Sys.wait(5);
+        }
+        return;
+    }
+}

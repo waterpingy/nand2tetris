@@ -1,0 +1,67 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/05/Memory.hdl
+
+/**
+ * The complete address space of the Hack computer's memory,
+ * including RAM and memory-mapped I/O.
+ * The chip facilitates read and write operations, as follows:
+ *     Read:  out(t) = Memory[address(t)](t)
+ *     Write: if load(t-1) then Memory[address(t-1)](t) = in(t-1)
+ * In words: the chip always outputs the value stored at the memory
+ * location specified by address. If load==1, the in value is loaded
+ * into the memory location specified by address. This value becomes
+ * available through the out output from the next time step onward.
+ * Address space rules:
+ * Only the upper 16K+8K+1 words of the Memory chip are used.
+ * Access to address>0x6000 is invalid. Access to any address in
+ * the range 0x4000-0x5FFF results in accessing the screen memory
+ * map. Access to address 0x6000 results in accessing the keyboard
+ * memory map. The behavior in these addresses is described in the
+ * Screen and Keyboard chip specifications given in the book.
+ */
+
+CHIP Memory {
+    IN in[16], load, address[15];
+    OUT out[16];
+
+    PARTS:
+    /* connect 3 parts into interface */
+    /* first 14 bits only would be for RAM16 */
+    /* 15th bit on and not preceeding would be screen */
+    /* last 2 bits on would be for keyboard */
+    /* last 2 bits plus any more would be invalid */
+    /**
+    * 8-way demultiplexor:
+    * {a, b, c, d, e, f, g, h} = {in, 0, 0, 0, 0, 0, 0, 0} if sel == 000 RAM
+    *                            {0, in, 0, 0, 0, 0, 0, 0} if sel == 001 RAM
+    *                            {0, 0, in, 0, 0, 0, 0, 0} if sel == 010 RAM
+    *                            {0, 0, 0, in, 0, 0, 0, 0} if sel == 011 RAM
+    *                            {0, 0, 0, 0, in, 0, 0, 0} if sel == 100 screen
+    *                            {0, 0, 0, 0, 0, in, 0, 0} if sel == 101 screen
+    *                            {0, 0, 0, 0, 0, 0, in, 0} if sel == 110 keyboard
+    *                            {0, 0, 0, 0, 0, 0, 0, in} if sel == 111 invalid
+    */
+
+    /* use most sig bits to find which sub-component in */
+    /* 4 options for ram, 2 for screen, 1 for keyboard, 1 for invalid */
+    DMux8Way(in=load, sel=address[12..14], a=ram1, b=ram2, c=ram3, d=ram4, e=screen1, f=screen2, g=keyboard, h=invalid);
+    /* load ram? */
+    Or(a=ram1, b=ram2, out=o1);
+    Or(a=ram3, b=ram4, out=o2);
+    Or(a=o1, b=o2, out=loadRam);
+    /* load screen? */
+    Or(a=screen1, b=screen2, out=loadScreen);
+
+    /* reminder: indexing starts from right */
+
+    /* only need first 14 bits to select address of any register on RAM16K */
+    RAM16K(in=in, load=loadRam, address=address[0..13], out=ramOut);
+    /* only need first 13 bits to select address of any register in  RAM8K screen */
+    Screen(in=in, load=loadScreen, address=address[0..12], out=screenOut);
+    Keyboard(out=keyboardOut);
+
+    /* collapse down which one we should output from in final 2 sig bits */
+    Mux4Way16(a=ramOut, b=ramOut, c=screenOut, d=keyboardOut, sel=address[13..14], out=out);
+}

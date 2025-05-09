@@ -1,0 +1,32 @@
+/** Minimal Math: random(max) & abs(x).  All literals ≤ 32767. */
+class Math {
+
+    static int seed;                     // 0..32767
+
+    function void init () {              // optional seeding
+        let seed = 12345;
+        return;
+    }
+
+    function int random (int max) {
+        var int r;
+
+        /* seed = (seed*109 + 1021) mod 32768  (all literals safe) */
+        let seed = (seed * 109) + 1021;
+        if (seed > 32767) {
+            let seed = seed - 32767;
+            let seed = seed - 1;         // total −32768
+        }
+
+        let r = seed;
+        while (~(r < max)) {             // while r >= max
+            let r = r - max;
+        }
+        return r;
+    }
+
+    function int abs (int x) {
+        if (x < 0) { return 0 - x; }
+        return x;
+    }
+}

@@ -1,0 +1,71 @@
+/** Main game loop for the Snake game.                         */
+class Main {
+
+    function void main () {
+        var Snake snake;
+        var Apple apple;
+        var int   key, i;
+
+        let snake = Snake.new();
+        let apple = Apple.new();
+
+        // ===== main loop =====
+        while (true) {
+
+            // -------- input --------
+            let key = Keyboard.keyPressed();
+            if (key = 130) {       // up arrow
+                do snake.setDirection(0);
+            }
+            if (key = 132) {       // right arrow
+                do snake.setDirection(1);
+            }
+            if (key = 133) {       // down arrow
+                do snake.setDirection(2);
+            }
+            if (key = 131) {       // left arrow
+                do snake.setDirection(3);
+            }
+
+            // -------- game logic --------
+            do snake.move();
+
+            // ---- wall collision ----
+            if ((snake.headX() < 0) | (snake.headX() > 511) |
+                (snake.headY() < 0) | (snake.headY() > 255)) {
+                // end game: clear screen and halt
+                do Screen.clearScreen();
+                do Output.printString("Game Over");
+                do Output.println();
+                do Sys.wait(100);
+                do Sys.halt();       // stops the CPU emulator
+                }
+
+            if ((snake.headX() = apple.getX()) &
+                (snake.headY() = apple.getY())) {
+                do snake.grow();
+                do apple.spawn();
+            }
+
+            // -------- draw --------
+            do Screen.clearScreen();
+
+            let i = 0;
+            while (i < snake.getLength()) {
+                do Screen.drawRectangle(
+                       snake.getX(i), snake.getY(i),
+                       snake.getX(i) + 1, snake.getY(i) + 1);
+                let i = i + 1;
+            }
+
+            do Screen.drawRectangle(
+                   apple.getX(), apple.getY(),
+                   apple.getX() + 1, apple.getY() + 1);
+
+            // ~20 frames per second
+            do Sys.wait(5);
+        }
+
+        return;
+    }
+}

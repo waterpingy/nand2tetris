@@ -1,0 +1,186 @@
+class Game {
+
+    field Array squares;
+
+    constructor Game new() {
+        let squares = Array.new(9);
+        do drawGrid();
+        return this;
+    }
+
+    method void selectCell(boolean playerX) {
+        var int key;
+
+        while(true) {
+            let key = Keyboard.keyPressed();
+            
+             if(key = 49) { // 1
+                 if(validSelection(0)) {
+                     do makeSelection(0, 192, 64, playerX);
+                     return;
+                 }
+             }
+
+             if(key = 50) { // 2
+                 if(validSelection(1)) {
+                     do makeSelection(1, 256, 64, playerX);
+                     return;
+                 }
+             }
+
+             if(key = 51) { // 3
+                 if(validSelection(2)) {
+                     do makeSelection(2, 320, 64, playerX);
+                     return;
+                 }
+             }
+
+             if(key = 52) { // 4
+                 if(validSelection(3)) {
+                     do makeSelection(3, 192, 128, playerX);
+                     return;
+                 }
+             }
+
+             if(key = 53) { // 5
+                 if(validSelection(4)) {
+                     do makeSelection(4, 256, 128, playerX);
+                     return;
+                 }
+             }
+
+             if(key = 54) { // 6
+                 if(validSelection(5)) {
+                     do makeSelection(5, 320, 128, playerX);
+                     return;
+                 }
+             }
+
+             if(key = 55) { // 7
+                 if(validSelection(6)) {
+                     do makeSelection(6, 192, 192, playerX);
+                     return;
+                 }
+             }
+
+             if(key = 56) { // 8
+                 if(validSelection(7)) {
+                     do makeSelection(7, 256, 192, playerX);
+                     return;
+                 }
+             }
+
+             if(key = 57) { // 9
+                 if(validSelection(8)) {
+                     do makeSelection(8, 320, 192, playerX);
+                     return;
+                 }
+             }
+        }
+        return;
+    }
+
+    method boolean validSelection(int location){
+        if(~(squares[location] = -1) & ~(squares[location] = 1)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    method void makeSelection(int location, int x, int y, boolean playerX) {       
+        if(playerX){
+            let squares[location] = 1;
+        }else{
+            let squares[location] = -1;
+        }
+
+        if(playerX){
+            do drawO(x, y);
+        }else{
+            do drawX(x, y);
+        }
+        return;
+    }
+
+    method void drawGrid() {
+        do Screen.drawLine(224, 32, 224, 224);
+        do Screen.drawLine(288, 32, 288, 224);
+        do Screen.drawLine(160, 96, 352, 96);
+        do Screen.drawLine(160, 160, 352, 160);
+        return;
+    }
+
+    method void drawO(int x, int y){
+        do Screen.drawCircle(x, y, 20);
+        do Screen.setColor(false);
+        do Screen.drawCircle(x, y, 19);
+        do Screen.setColor(true);
+        return;
+    }
+
+    method void drawX(int x, int y){
+        var int left, right, top, bottom;
+
+        let left = x - 15;
+        let right = x + 15;
+        let top = y + 15;
+        let bottom = y - 15;
+
+        do Screen.drawLine(left, top, right, bottom);
+        do Screen.drawLine(right, top, left, bottom);
+        return;
+    }
+
+    method boolean winner(){
+        if((victoryOn(squares[0], squares[1], squares[2])) |
+            (victoryOn(squares[3], squares[4], squares[5])) |
+            (victoryOn(squares[6], squares[7], squares[8])) |
+            (victoryOn(squares[0], squares[3], squares[6])) |
+            (victoryOn(squares[1], squares[4], squares[7])) |
+            (victoryOn(squares[2], squares[5], squares[8])) |
+            (victoryOn(squares[0], squares[4], squares[8])) |
+            (victoryOn(squares[2], squares[4], squares[6]))){
+          return true;
+        }
+        return false;
+  }
+
+  method string idToString(int id){
+    if(id = -1){
+      return "X";
+    }else{
+      return "O";
+    }
+  }
+
+  method boolean victoryOn(int x, int y, int z){
+    if((x = 0) | (y = 0) | (z = 0)){
+      return false;
+    }
+    if((x = y) & (y = z)){
+      do Output.printString("We have a winner!");
+      do Output.println();
+      do Output.printString("Congratulations to ");
+      do Output.printString(idToString(x));
+      do Output.printString("!");
+      return true;
+    }
+    return false;
+  }
+
+  method boolean isBoardFull() {
+      if((squares[0]=1 | squares[0]=-1)
+        & (squares[1]=1 | squares[1]=-1)
+        & (squares[2]=1 | squares[2]=-1)
+        & (squares[3]=1 | squares[3]=-1)
+        & (squares[4]=1 | squares[4]=-1)
+        & (squares[5]=1 | squares[5]=-1)
+        & (squares[6]=1 | squares[6]=-1)
+        & (squares[7]=1 | squares[7]=-1)
+        & (squares[8]=1 | squares[8]=-1)) {
+            return true;
+        }
+        return false;
+  }
+}

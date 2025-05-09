@@ -1,0 +1,280 @@
+function Snake.new 0
+    push constant 4
+    call Memory.alloc 1
+    pop pointer 0
+    push constant 200
+    call Array.new 1
+    pop this 0
+    push constant 200
+    call Array.new 1
+    pop this 1
+    push constant 0
+    push this 0
+    add
+    push constant 20
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push constant 0
+    push this 1
+    add
+    push constant 10
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push constant 1
+    pop this 2
+    push constant 1
+    pop this 3
+    push pointer 0
+    return
+function Snake.setDirection 0
+    push argument 0
+    pop pointer 0
+    push this 3
+    push constant 0
+    eq
+    push argument 1
+    push constant 2
+    eq
+    and
+    not
+    if-goto Snake_1
+    push constant 0
+    return
+    goto Snake_0
+label Snake_1
+label Snake_0
+    push this 3
+    push constant 2
+    eq
+    push argument 1
+    push constant 0
+    eq
+    and
+    not
+    if-goto Snake_3
+    push constant 0
+    return
+    goto Snake_2
+label Snake_3
+label Snake_2
+    push this 3
+    push constant 1
+    eq
+    push argument 1
+    push constant 3
+    eq
+    and
+    not
+    if-goto Snake_5
+    push constant 0
+    return
+    goto Snake_4
+label Snake_5
+label Snake_4
+    push this 3
+    push constant 3
+    eq
+    push argument 1
+    push constant 1
+    eq
+    and
+    not
+    if-goto Snake_7
+    push constant 0
+    return
+    goto Snake_6
+label Snake_7
+label Snake_6
+    push argument 1
+    pop this 3
+    push constant 0
+    return
+function Snake.move 1
+    push argument 0
+    pop pointer 0
+    push this 2
+    pop local 0
+label Snake_8
+    push local 0
+    push constant 0
+    gt
+    not
+    if-goto Snake_9
+    push local 0
+    push this 0
+    add
+    push local 0
+    push constant 1
+    sub
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 0
+    push this 1
+    add
+    push local 0
+    push constant 1
+    sub
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 0
+    push constant 1
+    sub
+    pop local 0
+    goto Snake_8
+label Snake_9
+    push this 3
+    push constant 0
+    eq
+    not
+    if-goto Snake_11
+    push constant 0
+    push this 1
+    add
+    push constant 0
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    push constant 1
+    sub
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    goto Snake_10
+label Snake_11
+label Snake_10
+    push this 3
+    push constant 1
+    eq
+    not
+    if-goto Snake_13
+    push constant 0
+    push this 0
+    add
+    push constant 0
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    push constant 1
+    add
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    goto Snake_12
+label Snake_13
+label Snake_12
+    push this 3
+    push constant 2
+    eq
+    not
+    if-goto Snake_15
+    push constant 0
+    push this 1
+    add
+    push constant 0
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    push constant 1
+    add
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    goto Snake_14
+label Snake_15
+label Snake_14
+    push this 3
+    push constant 3
+    eq
+    not
+    if-goto Snake_17
+    push constant 0
+    push this 0
+    add
+    push constant 0
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    push constant 1
+    sub
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    goto Snake_16
+label Snake_17
+label Snake_16
+    push constant 0
+    return
+function Snake.grow 0
+    push argument 0
+    pop pointer 0
+    push this 2
+    push constant 1
+    add
+    pop this 2
+    push constant 0
+    return
+function Snake.getLength 0
+    push argument 0
+    pop pointer 0
+    push this 2
+    return
+function Snake.getX 0
+    push argument 0
+    pop pointer 0
+    push argument 1
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    return
+function Snake.getY 0
+    push argument 0
+    pop pointer 0
+    push argument 1
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    return
+function Snake.headX 0
+    push argument 0
+    pop pointer 0
+    push constant 0
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    return
+function Snake.headY 0
+    push argument 0
+    pop pointer 0
+    push constant 0
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    return

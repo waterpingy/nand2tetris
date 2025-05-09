@@ -1,0 +1,253 @@
+function Main.main 12
+    call Snake.new 0
+    pop local 0
+    call Apple.new 0
+    pop local 1
+    push local 1
+    push local 0
+    call Apple.spawn 2
+    pop temp 0
+label Main_0
+    push constant 1
+    neg
+    not
+    if-goto Main_1
+    call Keyboard.keyPressed 0
+    pop local 2
+    push local 2
+    push constant 131
+    eq
+    not
+    if-goto Main_3
+    push local 0
+    push constant 0
+    call Snake.setDirection 2
+    pop temp 0
+    goto Main_2
+label Main_3
+label Main_2
+    push local 2
+    push constant 132
+    eq
+    not
+    if-goto Main_5
+    push local 0
+    push constant 1
+    call Snake.setDirection 2
+    pop temp 0
+    goto Main_4
+label Main_5
+label Main_4
+    push local 2
+    push constant 133
+    eq
+    not
+    if-goto Main_7
+    push local 0
+    push constant 2
+    call Snake.setDirection 2
+    pop temp 0
+    goto Main_6
+label Main_7
+label Main_6
+    push local 2
+    push constant 130
+    eq
+    not
+    if-goto Main_9
+    push local 0
+    push constant 3
+    call Snake.setDirection 2
+    pop temp 0
+    goto Main_8
+label Main_9
+label Main_8
+    push local 0
+    call Snake.move 1
+    pop temp 0
+    push local 0
+    call Snake.headX 1
+    push constant 0
+    lt
+    push local 0
+    call Snake.headX 1
+    push constant 511
+    gt
+    or
+    push local 0
+    call Snake.headY 1
+    push constant 0
+    lt
+    or
+    push local 0
+    call Snake.headY 1
+    push constant 255
+    gt
+    or
+    not
+    if-goto Main_11
+    call Screen.clearScreen 0
+    pop temp 0
+    push constant 9
+    call String.new 1
+    push constant 71
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 109
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 79
+    call String.appendChar 2
+    push constant 118
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    call Output.printString 1
+    pop temp 0
+    call Output.println 0
+    pop temp 0
+    push constant 100
+    call Sys.wait 1
+    pop temp 0
+    call Sys.halt 0
+    pop temp 0
+    goto Main_10
+label Main_11
+label Main_10
+    push local 0
+    call Snake.headX 1
+    push local 1
+    call Apple.getX 1
+    eq
+    push local 0
+    call Snake.headY 1
+    push local 1
+    call Apple.getY 1
+    eq
+    and
+    not
+    if-goto Main_13
+    push local 0
+    call Snake.grow 1
+    pop temp 0
+    push local 1
+    push local 0
+    call Apple.spawn 2
+    pop temp 0
+    goto Main_12
+label Main_13
+label Main_12
+    call Screen.clearScreen 0
+    pop temp 0
+    push local 1
+    call Apple.getX 1
+    pop local 8
+    push local 1
+    call Apple.getY 1
+    pop local 9
+    push local 8
+    push constant 3
+    add
+    pop local 10
+    push local 9
+    push constant 3
+    add
+    pop local 11
+    push local 8
+    push constant 0
+    lt
+    push local 10
+    push constant 511
+    gt
+    or
+    push local 9
+    push constant 0
+    lt
+    or
+    push local 11
+    push constant 255
+    gt
+    or
+    not
+    not
+    if-goto Main_15
+    push local 8
+    push local 9
+    push local 10
+    push local 11
+    call Screen.drawRectangle 4
+    pop temp 0
+    goto Main_14
+label Main_15
+label Main_14
+    push constant 0
+    pop local 3
+label Main_16
+    push local 3
+    push local 0
+    call Snake.getLength 1
+    lt
+    not
+    if-goto Main_17
+    push local 0
+    push local 3
+    call Snake.getX 2
+    pop local 4
+    push local 0
+    push local 3
+    call Snake.getY 2
+    pop local 5
+    push local 4
+    push constant 1
+    add
+    pop local 6
+    push local 5
+    push constant 1
+    add
+    pop local 7
+    push local 4
+    push constant 0
+    lt
+    push local 6
+    push constant 511
+    gt
+    or
+    push local 5
+    push constant 0
+    lt
+    or
+    push local 7
+    push constant 255
+    gt
+    or
+    not
+    not
+    if-goto Main_19
+    push local 4
+    push local 5
+    push local 6
+    push local 7
+    call Screen.drawRectangle 4
+    pop temp 0
+    goto Main_18
+label Main_19
+label Main_18
+    push local 3
+    push constant 1
+    add
+    pop local 3
+    goto Main_16
+label Main_17
+    push constant 5
+    call Sys.wait 1
+    pop temp 0
+    goto Main_0
+label Main_1
+    push constant 0
+    return

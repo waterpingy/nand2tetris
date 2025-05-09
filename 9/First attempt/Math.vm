@@ -1,0 +1,60 @@
+function Math.init 0
+    push constant 12345
+    pop static 0
+    push constant 0
+    return
+function Math.random 1
+    push static 0
+    push constant 109
+    call Math.multiply 2
+    push constant 1021
+    add
+    pop static 0
+    push static 0
+    push constant 32767
+    gt
+    not
+    if-goto Math_1
+    push static 0
+    push constant 32767
+    sub
+    pop static 0
+    push static 0
+    push constant 1
+    sub
+    pop static 0
+    goto Math_0
+label Math_1
+label Math_0
+    push static 0
+    pop local 0
+label Math_2
+    push local 0
+    push argument 0
+    lt
+    not
+    not
+    if-goto Math_3
+    push local 0
+    push argument 0
+    sub
+    pop local 0
+    goto Math_2
+label Math_3
+    push local 0
+    return
+function Math.abs 0
+    push argument 0
+    push constant 0
+    lt
+    not
+    if-goto Math_5
+    push constant 0
+    push argument 0
+    sub
+    return
+    goto Math_4
+label Math_5
+label Math_4
+    push argument 0
+    return

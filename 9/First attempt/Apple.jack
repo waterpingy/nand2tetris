@@ -1,0 +1,21 @@
+/** Represents a single food dot (“apple”) for the snake. */
+class Apple {
+
+    field int x, y;            // current position
+
+    constructor Apple new () {
+        do spawn();            // pick an initial random spot
+        return this;
+    }
+
+    /** Chooses a new (pseudo-)random grid position. */
+    method void spawn () {
+        // Math.random(n) returns 0..n-1; keep apple inside 5..54 × 5..24
+        let x = Math.random(50) + 5;
+        let y = Math.random(20) + 5;
+        return;
+    }
+
+    method int getX () { return x; }
+    method int getY () { return y; }
+}
